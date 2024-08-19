@@ -10,7 +10,6 @@ body {
     scroll-snap-type: y mandatory;
     scroll-behavior: smooth;
     height: 100vh;
-    overflow-y: auto;
 }
 
 .section {
@@ -23,12 +22,33 @@ body {
     background: url('background.png') center/cover no-repeat;
     position: relative;
     scroll-snap-align: start;
-    scroll-snap-stop: always;
+    z-index: 1; /* Ensure section content is above the fireworks */
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+    text-align: center;
 }
 
 #hero {
     background: url('background.png') center/cover no-repeat, rgba(0, 0, 0, 0.7);
     background-blend-mode: overlay;
+    position: relative;
+    z-index: 1; /* Ensure hero content is above the fireworks */
+}
+
+#fireworks {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0; /* Place the fireworks behind the content */
 }
 
 .subtitle {
@@ -114,7 +134,6 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    cursor: pointer;
 }
 
 footer {
@@ -128,12 +147,36 @@ footer p {
     margin: 0;
 }
 
-#fireworks {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 9999;
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+    .subtitle {
+        font-size: 1.2em;
+    }
+
+    .large-text {
+        font-size: 1.8em;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 1em;
+    }
+
+    .images img {
+        width: 150px;
+    }
+
+    .progress-bar {
+        width: 90%;
+        height: 20px;
+    }
+
+    .section {
+        padding: 30px 10px;
+    }
+
+    #not-attending {
+        top: 45%;
+        left: 45%;
+    }
 }
