@@ -20,9 +20,9 @@ window.onload = function() {
         <p class="small-text">*based on average male lifespan</p>
     `;
 
-    // Initialize fireworks animation
+    // Initialize fireworks animation behind content
     const fireworksContainer = document.getElementById('fireworks');
-    const fireworks = new Fireworks.default(fireworksContainer, {
+    const fireworks = new Fireworks(fireworksContainer, {
         rocketsPoint: 50,
         hue: { min: 0, max: 360 },
         delay: { min: 15, max: 30 },
@@ -32,13 +32,8 @@ window.onload = function() {
         gravity: 1.5,
         particles: 50,
         trace: 3,
+        traceSpeed: 10,
         explosion: 5,
-        autoresize: true,
-        brightness: { 
-            min: 50, 
-            max: 80, 
-            decay: { min: 0.015, max: 0.03 } 
-        },
         boundaries: {
             x: 50,
             y: 50,
@@ -48,35 +43,36 @@ window.onload = function() {
         sound: {
             enable: true,
             files: [
-                'https://cdn.jsdelivr.net/npm/fireworks-js@latest/dist/sounds/explosion0.mp3',
-                'https://cdn.jsdelivr.net/npm/fireworks-js@latest/dist/sounds/explosion1.mp3',
-                'https://cdn.jsdelivr.net/npm/fireworks-js@latest/dist/sounds/explosion2.mp3'
-            ],
-            volume: { min: 4, max: 8 }
-        }
+                'https://cdn.jsdelivr.net/gh/crashmax-dev/fireworks-js@latest/assets/explosion0.mp3',
+                'https://cdn.jsdelivr.net/gh/crashmax-dev/fireworks-js@latest/assets/explosion1.mp3',
+                'https://cdn.jsdelivr.net/gh/crashmax-dev/fireworks-js@latest/assets/explosion2.mp3'
+            ]
+        },
+        autoresize: true,
+        brightness: { min: 50, max: 80, decay: { min: 0.015, max: 0.03 } },
+        decay: 0.03
     });
 
     fireworks.start();
 
-    // Not Attending button behavior
+    // Not Attending button behavior (random position across the whole page)
     const notAttendingButton = document.getElementById('not-attending');
-    notAttendingButton.addEventListener('mouseover', moveButton);
-    notAttendingButton.addEventListener('touchstart', moveButton);
-
-    function moveButton(event) {
-        event.preventDefault(); // Prevent default touch behavior on mobile
+    const moveButtonRandomly = () => {
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
-        const buttonWidth = notAttendingButton.offsetWidth;
-        const buttonHeight = notAttendingButton.offsetHeight;
-        
-        const newX = Math.random() * (viewportWidth - buttonWidth);
-        const newY = Math.random() * (viewportHeight - buttonHeight);
+        const newX = Math.random() * (viewportWidth - notAttendingButton.offsetWidth);
+        const newY = Math.random() * (viewportHeight - notAttendingButton.offsetHeight);
 
-        notAttendingButton.style.position = 'fixed';
+        notAttendingButton.style.position = 'absolute';
         notAttendingButton.style.left = `${newX}px`;
         notAttendingButton.style.top = `${newY}px`;
-    }
+    };
+
+    // For desktop, use mouseover
+    notAttendingButton.addEventListener('mouseover', moveButtonRandomly);
+
+    // For mobile, use touchstart
+    notAttendingButton.addEventListener('touchstart', moveButtonRandomly);
 };
 
 function openWhatsApp(status) {
@@ -93,10 +89,3 @@ function openWhatsApp(status) {
 }
 
 // Attach these functions to the buttons directly
-document.querySelector('.attend').onclick = function() {
-    openWhatsApp('attending');
-}
-
-document.querySelector('.attend-plus-one').onclick = function() {
-    openWhatsApp('attending plus one');
-}
